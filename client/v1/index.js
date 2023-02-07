@@ -87,6 +87,18 @@ console.log("Number of brands :",brands_name.length);
 // 2. Create a variable and assign it the list of products by price from lowest to highest
 // 3. Log the variable
 
+function sort_price(products){
+	products.sort(function(a, b) {
+    return a.price - b.price;
+  });
+return products;}
+  
+console.log(sort_price(marketplace));
+
+const asc_price = sort_price(marketplace);
+console.log(asc_price);
+
+
 // 🎯 TODO 5: Sort by date
 // 1. Create a function to sort the marketplace objects by products date
 // 2. Create a variable and assign it the list of products by date from recent to old
