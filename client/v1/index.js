@@ -34,7 +34,22 @@ console.log(MY_FAVORITE_BRANDS[0]);
 // 1. Create a new variable and assign it the link of the cheapest t-shirt
 // I can find on these e-shops
 // 2. Log the variable
-
+const CHEAPEST_T_SHIRTS = [
+  {
+    'name': 'cheap_T_shirt_Faguo',
+    'url': 'https://www.faguo-store.com/fr/vetements/7606-arcy-t-shirt-en-coton-recycle-kaki.html'
+  },
+  {
+    'name': 'cheap_T_shirt_Loom',
+    'url': 'https://www.loom.fr/collections/t-shirts-polos/products/le-t-shirt-homme'
+  },
+  {
+    'name': 'cheap_T_shirt_Ecclo',
+    'url': 'https://ecclo.fr/products/t-shirt-noir-boycott-world-cup-2022'
+  }
+];
+console.table(CHEAPEST_T_SHIRTS);
+console.log(CHEAPEST_T_SHIRTS[0]);
 /**
  * 👕
  * Easy 😁?
