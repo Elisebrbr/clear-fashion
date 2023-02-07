@@ -73,6 +73,15 @@ console.log('Number of products =', num_prod);
 // 2. Log the variable
 // 3. Log how many brands we have
 
+const brands_name =[];
+
+for(let i = 0; i < marketplace.length;i++){
+    const len = brands_name.length;
+    brands_name[len] = marketplace[i]["brand"];
+}
+console.log("Brands Name :",brands_name);
+console.log("Number of brands :",brands_name.length);
+
 // 🎯 TODO 4: Sort by price
 // 1. Create a function to sort the marketplace products by price
 // 2. Create a variable and assign it the list of products by price from lowest to highest
