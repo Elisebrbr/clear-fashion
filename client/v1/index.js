@@ -184,6 +184,12 @@ for (const brand in brands) {
 // 1. For each brand, sort the products by price, from highest to lowest
 // 2. Log the sort
 
+Object.keys(brands).forEach(brand => {
+  brands[brand] = sort_price(brands[brand]);
+});
+
+console.log(brands);
+
 // 🎯 TODO 10: Sort by date for each brand
 // 1. For each brand, sort the products by date, from old to recent
 // 2. Log the sort
