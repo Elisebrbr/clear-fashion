@@ -158,6 +158,9 @@ console.log('Average =', average_price);
 // };
 //
 
+// 2. Log the variable
+// 3. Log the number of products by brands
+
 const brands = {};
 for (const product of marketplace) {
   const brand = product.brand;
@@ -171,10 +174,11 @@ for (const product of marketplace) {
 
 console.log(brands);
 
+for (const brand in brands) {
+  console.log(`Number of products for ${brand}: ${brands[brand].length}`);
+}
 
 
-// 2. Log the variable
-// 3. Log the number of products by brands
 
 // 🎯 TODO 9: Sort by price for each brand
 // 1. For each brand, sort the products by price, from highest to lowest
