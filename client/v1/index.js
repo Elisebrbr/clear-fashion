@@ -194,6 +194,12 @@ console.log(brands);
 // 1. For each brand, sort the products by date, from old to recent
 // 2. Log the sort
 
+Object.keys(brands).forEach(brand => {
+  brands[brand] = sort_date(brands[brand]);
+});
+
+console.log(brands);
+
 /**
  * 💶
  * Let's talk about money now
