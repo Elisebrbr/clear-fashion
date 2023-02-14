@@ -130,6 +130,13 @@ console.log(filter)
 // 1. Determine the average price of the marketplace
 // 2. Log the average
 
+let sum = 0;
+for (const product of marketplace) {
+  sum += product.price;
+}
+const average_price = sum / marketplace.length;
+console.log('Average =', average_price);
+
 /**
  * 🏎
  * We are almost done with the `marketplace` variable
