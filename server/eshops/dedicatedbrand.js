@@ -7,24 +7,32 @@ const cheerio = require('cheerio');
  * @return {Array} products
  */
 const parse = data => {
-  const $ = cheerio.load(data);
+    const $ = cheerio.load(data);
 
-  return $('.productList-container .productList')
-    .map((i, element) => {
-      const name = $(element)
-        .find('.productList-title')
-        .text()
-        .trim()
-        .replace(/\s/g, ' ');
-      const price = parseInt(
-        $(element)
-          .find('.productList-price')
-          .text()
-      );
+    return $('.productList-container .productList')
+        .map((i, element) => {
+            const name = $(element)
+                .find('.productList-title')
+                .text()
+                .trim()
+                .replace(/\s/g, ' ');
+            const price = parseInt(
+                $(element)
+                    .find('.productList-price')
+                    .text()
+            );
+            const brand = 'Dedicated';
+            let url = $(element)
+                .find('.productList-link')
+                .attr('href');
+            url = 'https://www.dedicatedbrand.com'.concat(url);
+            const photo = $(element)
+                .find('img')
+                .attr('data-src');
 
-      return {name, price};
-    })
-    .get();
+            return {name, price, brand, url, photo};
+        })
+        .get();
 };
 
 /**
@@ -33,20 +41,20 @@ const parse = data => {
  * @return {Array|null}
  */
 module.exports.scrape = async url => {
-  try {
-    const response = await fetch(url);
+    try {
+        const response = await fetch(url);
 
-    if (response.ok) {
-      const body = await response.text();
+        if (response.ok) {
+            const body = await response.text();
 
-      return parse(body);
+            return parse(body);
+        }
+
+        console.error(response);
+
+        return null;
+    } catch (error) {
+        console.error(error);
+        return null;
     }
-
-    console.error(response);
-
-    return null;
-  } catch (error) {
-    console.error(error);
-    return null;
-  }
 };

@@ -1,5 +1,5 @@
 /* eslint-disable no-console, no-process-exit */
-const dedicatedbrand = require('./eshops/circlesport');
+const circlesport = require('./eshops/circlesport');
 const fs = require('fs').promises;
 
 async function sandbox (eshop = 'https://shop.circlesportswear.com/collections/collection-femme') {

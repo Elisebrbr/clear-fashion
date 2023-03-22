@@ -1,5 +1,5 @@
 /* eslint-disable no-console, no-process-exit */
-const dedicatedbrand = require('./eshops/montlimar');
+const montlimar = require('./eshops/montlimar');
 const fs = require('fs').promises;
 
 async function sandbox (eshop = 'https://www.montlimart.com/99-vetements') {
