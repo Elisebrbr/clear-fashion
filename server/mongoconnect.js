@@ -49,9 +49,9 @@ async function main() {
 
 main();
 
-const brand1 = 'dedicated';
-const brand2 = 'montlimart';
-const brand3 = 'circle sport';
+const brand1 = 'Dedicated';
+const brand2 = 'Montlimart';
+const brand3 = 'Circle Sport';
 
 async function findProductsByBrand(db, brand) {
   const collection = db.collection('products');
@@ -60,6 +60,8 @@ async function findProductsByBrand(db, brand) {
   console.log(products);
 }
 
+
+//Find all products related to a given brands
 async function query1() {
   const client = await MongoClient.connect(MONGODB_URI, {
     useNewUrlParser: true,
@@ -68,7 +70,7 @@ async function query1() {
   const db = client.db(MONGODB_DB_NAME);
 
   try {
-    await findProductsByBrand(db, brand1);
+    await findProductsByBrand(db, brand3);
   } catch (error) {
     console.error(error);
   } finally {
@@ -76,4 +78,56 @@ async function query1() {
   }
 }
 
-query1();
+async function findProductsByPriceLessThan(db, price) {
+  const collection = db.collection('products');
+  const products = await collection.find({ price: { $lt: price } }).toArray();
+  console.log(`Found ${products.length} products with price less than ${price}`);
+  console.log(products);
+}
+
+//Find all products less than a price
+async function query2() {
+  const client = await MongoClient.connect(MONGODB_URI, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  });
+  const db = client.db(MONGODB_DB_NAME);
+
+  try {
+    await findProductsByPriceLessThan(db, 100);
+  } catch (error) {
+    console.error(error);
+  } finally {
+    await client.close();
+  }
+}
+
+async function findProductsSortedByPrice(db, sortDirection = 1) {
+  const collection = db.collection('products');
+  const sort = { price: sortDirection };
+  const products = await collection.find().sort(sort).toArray();
+  console.log(`Found ${products.length} products sorted by price (in ${sortDirection === 1 ? 'ascending' : 'descending'} order)`);
+  console.log(products);
+}
+
+// Find all products sorted by price
+async function query3() {
+  const client = await MongoClient.connect(MONGODB_URI, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  });
+  const db = client.db(MONGODB_DB_NAME);
+
+  try {
+    await findProductsSortedByPrice(db,-1);
+  } catch (error) {
+    console.error(error);
+  } finally {
+    await client.close();
+  }
+}
+
+query1()
+query2()
+query3()
+
