@@ -58,9 +58,8 @@ app.get('/products/search', async (request, response) => {
 
 });
 
-// Fetch a specific product
-// Here is an example of a test endpoint:
-// http://localhost:8092/products/0ac4944c353098057c484ece
+
+//http://localhost:8092/products/642430589661b19b8ce4585c
 app.get('/products/:id', async (req, res) => {
   const productId = req.params.id;
   const client = await MongoClient.connect(MONGODB_URI, {
@@ -76,11 +75,11 @@ app.get('/products/:id', async (req, res) => {
     if (product) {
       res.json(product);
     } else {
-      res.status(404).json({ error: 'Product not found' });
+      res.status(404).json({ error: 'Error : Product not found' });
     }
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: 'Internal server error' });
+    res.status(500).json({ error: 'Error : Internal server error' });
   } finally {
     await client.close();
   }
