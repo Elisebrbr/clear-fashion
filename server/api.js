@@ -1,13 +1,19 @@
+const { ObjectID } = require('bson');
 const cors = require('cors');
 const express = require('express');
 const helmet = require('helmet');
-const { MongoClient, ObjectId } = require('mongodb');
+const {MongoClient} = require('mongodb');
 const MONGODB_URI = "mongodb+srv://eliseb:MongoDB123@cluster0.2slx9zb.mongodb.net/?retryWrites=true&w=majority";
 const MONGODB_DB_NAME = 'clearfashion';
 
-const PORT = 8092;
+var ObjectId=require('mongodb').ObjectId;
 
+
+const PORT = 8092;
 const app = express();
+
+
+
 
 module.exports = app;
 
@@ -17,136 +23,157 @@ app.use(helmet());
 
 app.options('*', cors());
 
-app.get('/', (request, response) => {
-    response.send({'ack': true});
+app.get('/', async(request, response) => {
+
+    //response.send({'ack':true});
+
+    const client = await MongoClient.connect(MONGODB_URI, { 'useNewUrlParser': true });
+    const db = client.db(MONGODB_DB_NAME);
+    const collection = db.collection('products');
+    const products = await collection.find({}).toArray();
+    response.send(products);
+
+
 });
+
+
 
 app.listen(PORT);
 
-console.log('📡 Running on port ${PORT}');
+console.log(`📡 Running on port ${PORT}`);
 
-app.get('/products/search', async (req, res, next) => {
-    const { limit = 12, brand = null, price = null } = req.query;
-    const query = {};
+async function ID(id){
+
+    const client = await MongoClient.connect(MONGODB_URI, {'useNewUrlParser': true});
+    const db =  client.db(MONGODB_DB_NAME);
+    const collection = db.collection('products');
+    const produ = await collection.find({"_id": new ObjectId(id)}).toArray();
+    return produ;
+}
+
+
+async function gettingProducts(limit, brand , price) {
+    const client = await MongoClient.connect(MONGODB_URI, { 'useNewUrlParser': true });
+    const db = client.db(MONGODB_DB_NAME);
+    const collection = db.collection('products');
+
+    let query = {};
+    if (brand) {
+        query.brand = brand;
+    }
+    if (price) {
+        query.price = { $lte: parseInt(price) };
+    }
+
+    const products = await collection.find(query).sort({ price: 1 }).limit(limit).toArray();
+
+    return products;
+}
+
+
+async function getProducts(size, brand, price, page,sort) {
+    const client = await MongoClient.connect(MONGODB_URI, { 'useNewUrlParser': true });
+    const db = client.db(MONGODB_DB_NAME);
+    const collection = db.collection('products');
+
+    let query = {};
+    let sortquery = {};
+    if (brand) {
+        query.brand = brand;
+    }
+    if (price) {
+        query.price = { $lte: parseInt(price) };
+    }
+
+    if (sort === 'asc') {
+
+        sortquery.price = 1;
+    }
+    if (sort === 'desc') {
+
+        sortquery.price = -1;
+    }
+
+    if (sort === 'old') {
+
+        sortquery.date = 1;
+    }
+    if (sort === 'new') {
+
+        sortquery.date = -1;
+    }
+
+    const products = await collection.find(query).sort(sortquery).skip((page - 1) * size).limit(size).toArray();
+
+    return products;
+}
+
+app.get('/products', async (req, res) => {
+    const page = parseInt(req.query.page || 1);
+    const size = parseInt(req.query.size || 12);
+    const brand = req.query.brand || null;
+    const price = req.query.price || null;
+    const sort=req.query.sort|| null;
+    let query = {};
+
+    const client = await MongoClient.connect(MONGODB_URI, { 'useNewUrlParser': true });
+    const db = client.db(MONGODB_DB_NAME);
+    const collection = db.collection('products');
+
 
     if (brand) {
         query.brand = brand;
     }
-
     if (price) {
-        query.price = { $lte: Number(price) };
+        query.price = { $lte: parseInt(price) };
     }
 
-    const client = await MongoClient.connect(MONGODB_URI, {
-        useNewUrlParser: true,
-        useUnifiedTopology: true,
+
+
+    const totalProducts = await collection.countDocuments(query);
+    const totalPages = Math.ceil(totalProducts / size);
+
+    const products = await getProducts(size, brand, price, page,sort);
+
+
+
+    res.send({
+        products,
+        totalPages,
+        currentPage: page,
+        totalProducts,
     });
-    const db = client.db(MONGODB_DB_NAME);
-
-    try {
-        const collection = db.collection('products');
-        const products = await collection
-            .find(query)
-            .limit(Number(limit))
-            .sort({ price: 1 })
-            .toArray();
-
-        res.json(products);
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({ error: 'Internal server error' });
-    } finally {
-        await client.close();
-    }
 });
 
-app.get('/sort', async (request, response) => {
-    const client = await MongoClient.connect(MONGODB_URI, {
-        useNewUrlParser: true,
-        useUnifiedTopology: true,
-    });
-    const collection = client.db(MONGODB_DB_NAME).collection('products');
-    const sortVal = request.query.sort;
 
-    const sortType = {};
-    if (sortVal === '1') {
-        sortType.price = 1;
-    } else if (sortVal === '-1') {
-        sortType.price = -1;
-    } else {
-        sortType.price = 0;
-    }
 
-    try {
-        const result = await collection.find({}).sort(sortType).toArray();
-        response.json(result);
-    } catch (error) {
-        console.error(error);
-        response.status(500).json({ error: 'Internal server error' });
-    } finally {
-        await client.close();
-    }
+
+app.get('/products/search', async (request, response) => {
+    const limit = parseInt(request.query.limit) || 12;
+    const brand = request.query.brand || null;
+    const price = request.query.price || null;
+
+    const products = await gettingProducts(limit, brand, price);
+    response.json(products);
 });
 
-app.get('/products', async (req, res) => {
-    const client = await MongoClient.connect(MONGODB_URI, {
-        useNewUrlParser: true,
-        useUnifiedTopology: true,
-    });
+
+app.get('/brands', async(request,response)=>{
+
+    const client = await MongoClient.connect(MONGODB_URI, { 'useNewUrlParser': true });
     const db = client.db(MONGODB_DB_NAME);
     const collection = db.collection('products');
+    const produ = await collection.distinct('brand');
 
-    try {
-        const result = await collection.find({}).toArray();
-        res.json(result);
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({ error: 'Internal server error' });
-    } finally {
-        await client.close();
-    }
-});
+    response.send(produ);
+})
 
-app.get('/brands', async (req, res) => {
-    const client = await MongoClient.connect(MONGODB_URI, {
-        useNewUrlParser: true,
-        useUnifiedTopology: true,
-    });
-    const db = client.db(MONGODB_DB_NAME);
-    const collection = db.collection('products');
 
-    try {
-        const result = await collection.distinct('brand');
-        res.json(result);
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({ error: 'Internal server error' });
-    } finally {
-        await client.close();
-    }
-});
 
-app.get('/products/:id', async (req, res) => {
-    const productId = req.params.id;
-    const client = await MongoClient.connect(MONGODB_URI, {
-        useNewUrlParser: true,
-        useUnifiedTopology: true,
-    });
-    const db = client.db(MONGODB_DB_NAME);
 
-    try {
-        const collection = db.collection('products');
-        const product = await collection.findOne({ _id: ObjectId(productId) });
 
-        if (product) {
-            res.json(product);
-        } else {
-            res.status(404).json({ error: 'Product not found' });
-        }
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({ error: 'Internal server error' });
-    } finally {
-        await client.close();
-    }
+app.get('/products/:id', async(request, response) => {
+
+    const result=await ID(request.params.id);
+    response.send(result);
 });
