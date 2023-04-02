@@ -2,11 +2,36 @@
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title> 👕 Clear Fahion 👕 | Respectful Clothing for Human Beings </title>
+    <title>👕 Clear Fahion | Environmentally & human-friendly clothes</title>
     <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-<h1>👕 Clear fashion 👕 <nav></nav> Respectful Clothing for Human Beings </h1>
+<h1>Clear fashion - Victor MENU DIA1</h1>
+<section id="indicators">
+    <h2>Indicators</h2>
+    <div>
+        <span>Number of products</span>
+        <span id="nbProducts"></span>
+    </div>
+    <div>
+        <span>Number of brands</span>
+        <span id="nbBrands"></span>
+    </div>
+    <div>
+        <span>p50 price value:</span>
+        <span id="percentile50"></span>
+    </div>
+    <div>
+        <span>p90 price value:</span>
+        <span id="percentile90"></span>
+    </div>
+    <div>
+        <span>p95 price value:</span>
+        <span id="percentile95"></span>
+    </div>
+</section>
+<br>
+<br>
 <section id="options">
     <div id="show">
         <label for="show-select">Show:</label>
@@ -17,59 +42,44 @@
         </select>
     </div>
     <div id="page">
-        <label for="page-select">Page:</label>
+        <label for="page-select">Go to page:</label>
         <select name="page" id="page-select"></select>
     </div>
-    <div id="brand">
-        <label for="brand-select">Brand:</label>
-        <select name="brand" id="brand-select"></select>
+    <div id="filters">
+        <div id="brand">
+            <label for="brand-select">By brand:</label>
+            <select name="brand" id="brand-select"> </select>
+        </div>
+        <div id="price">
+            <label for="price-select">Maximum price:</label>
+            <select name="price" id="price-select">
+                <option value="All">All</option>
+                <option value="10">10</option>
+                <option value="30">30</option>
+                <option value="50">50</option>
+            </select>
+        </div>
     </div>
     <div id="sort">
-        <label for="sort-select">Sort:</label>
+        <label for="sort-select">Sort by:</label>
         <select name="sort" id="sort-select">
-            <option value="price-asc">Cheaper</option>
-            <option value="price-desc">Expensive</option>
-            <option value="date-asc">Recently released</option>
-            <option value="date-desc">Anciently released</option>
+            <option value="Default">Default</option>
+            <option value="Cheapest">Cheapest</option>
+            <option value="Most expensive">Most expensive</option>
         </select>
     </div>
 </section>
 <br>
-<section id="indicators">
-    <div>
-        <span>Number of products</span>
-        <span id="nbProducts">0</span>
-    </div>
-    <div>
-        <span>Number of brands</span>
-        <span id="nbBrands">0</span>
-    </div>
-    <div>
-        <span>Number of new products</span>
-        <span id="nbRecentProducts">0</span>
-    </div>
-    <div>
-        <span>p50 price value</span>
-        <span id="spanP50">0</span>
-    </div>
-    <div>
-        <span>p90 price value</span>
-        <span id="spanP90">0</span>
-    </div>
-    <div>
-        <span>p95 price value</span>
-        <span id="spanP95">0</span>
-    </div>
-    <div>
-        <span>Last released date</span>
-        <span id="spanLastReleased">2020-01-01</span>
-    </div>
+<section id="products">
 </section>
-<br>
-<section id="products"></section>
-<script>
-    setTimeout(loadInfo, 200);
-</script>
+<section>
+    <h2 id="nbSearchProducts"></h2>
+    <div id="searchProducts" class="products"></div>
+</section>
+<section>
+    <h2 id="nbFavoriteProducts">0 favorite product</h2>
+    <div id="favoriteProducts" class="products"></div>
+</section>
 <script type="text/javascript" charset="UTF-8" src="P3.js"></script>
 </body>
 </html>
