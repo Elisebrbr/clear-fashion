@@ -76,7 +76,7 @@ const setCurrentProducts = (result) => {
 const fetchAllProducts = async (page = 1, size = 12) => {
     try {
         const response = await fetch(
-            `https://clear-fashion-api-iswarya.vercel.app/`
+            `https://clear-fashion-gqis-3ebl6jrui-elisebrbr.vercel.app/`
         );
         const body = await response.json();
         allproducts=body;
@@ -101,7 +101,7 @@ const fetchAllProducts = async (page = 1, size = 12) => {
  */
 const fetchProducts = async (page = pageNB, size = pagesize,brand=0,price=0,sort=0) => {
     try {
-        let url=`https://clear-fashion-api-iswarya.vercel.app/products?page=${page}&size=${size}`;
+        let url=`https://clear-fashion-gqis-3ebl6jrui-elisebrbr.vercel.app/products?page=${page}&size=${size}`;
 
         if(brand !== 0)
         {
@@ -157,7 +157,7 @@ const setCurrentBrand = (result) => {
 const fetchbrand= async () => {
     try {
         const response = await fetch(
-            `https://clear-fashion-api-iswarya.vercel.app/brands`
+            `https://clear-fashion-gqis-3ebl6jrui-elisebrbr.vercel.app/brands`
         );
         const body = await response.json();
 
