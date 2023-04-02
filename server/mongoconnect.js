@@ -131,11 +131,6 @@ query1()
 query2()
 query3()
 
-async function brandsList() {
-  const db = await connection();
-  let brands = await db.collection('products').distinct('brand');
-  brands = await brands;
-  return brands;
-}
+
 
 

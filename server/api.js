@@ -18,8 +18,9 @@ app.use(helmet());
 
 app.options('*', cors());
 
-app.get('/', (request, response) => {
+app.get('/', async(request, response) => {
   response.send({'ack': true});
+
 });
 
 
@@ -59,6 +60,35 @@ app.get('/products/search', async (request, response) => {
 
 });
 
+app.get('/sort', async (request, response) => {
+  const client = await MongoClient.connect(MONGODB_URI, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  });
+  const collection = client.db(MONGODB_DB_NAME).collection('products');
+  const sortVal = request.query.sort;
+
+  const sortType = {};
+  if (sortVal === '1') {
+    sortType.price = 1;
+  } else if (sortVal === '-1') {
+    sortType.price = -1;
+  } else {
+    sortType.price = 0;
+  }
+
+  try {
+    const result = await collection.find({}).sort(sortType).toArray();
+    response.json(result);
+  } catch (error) {
+    console.error(error);
+    response.status(500).json({ error: 'Internal server error' });
+  } finally {
+    await client.close();
+  }
+});
+
+
 app.get('/products', async (req, res) => {
   const client = await MongoClient.connect(MONGODB_URI, {
     useNewUrlParser: true,
@@ -96,6 +126,8 @@ app.get('/brands', async (req, res) => {
     await client.close();
   }
 });
+
+// /products and /brands came from Victor MENU
 
 
 
