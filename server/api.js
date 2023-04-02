@@ -2,7 +2,7 @@ const cors = require('cors');
 const express = require('express');
 const helmet = require('helmet');
 const { MongoClient, ObjectId } = require('mongodb');
-const MONGODB_URI = "mongodb+srv://lealuttenbacher:sPVLopuWtyfWWVM0@cluster0.4k4nejv.mongodb.net/?retryWrites=true&w=majority";
+const MONGODB_URI = "mongodb+srv://eliseb:MongoDB123@cluster0.2slx9zb.mongodb.net/?retryWrites=true&w=majority";
 const MONGODB_DB_NAME = 'clearfashion';
 
 const PORT = 8092;
