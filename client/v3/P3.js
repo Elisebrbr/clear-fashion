@@ -30,7 +30,7 @@ let favorite_products = [];
 
 const fetchProducts = async (show=12, page=1, brand="",price="") => {
     try {
-        let url = `https://clear-fashion-gqis-rgpgnggus-elisebrbr.vercel.app/search?brand=${brand}&price=${price}`;
+        let url = `https://clear-fashion-gqis-ih621ok5b-elisebrbr.vercel.app/search?brand=${brand}&price=${price}`;
 
         console.log(url);
         const response = await fetch(url);
@@ -55,7 +55,7 @@ const fetchProducts = async (show=12, page=1, brand="",price="") => {
 const fetchAllProducts = async () => {
     try {
         const response = await fetch(
-            'https://clear-fashion-gqis-rgpgnggus-elisebrbr.vercel.app/products'
+            'https://clear-fashion-gqis-ih621ok5b-elisebrbr.vercel.app/products'
 
         );
         const body = await response.json();
@@ -69,7 +69,7 @@ const fetchAllProducts = async () => {
 const fetchBrands = async () => {
     try {
         const response = await fetch(
-            'https://clear-fashion-gqis-rgpgnggus-elisebrbr.vercel.app/brands'
+            'https://clear-fashion-gqis-ih621ok5b-elisebrbr.vercel.app/brands'
 
         );
         const body = await response.json();
@@ -83,7 +83,7 @@ const fetchBrands = async () => {
 const fetchSortProducts = async (sort=-1) => {
     try {
         const response = await fetch(
-            `https://clear-fashion-gqis-rgpgnggus-elisebrbr.vercel.app/sort?sort=${sort}`
+            `https://clear-fashion-gqis-ih621ok5b-elisebrbr.vercel.app/sort?sort=${sort}`
 
         );
         const body = await response.json();
