@@ -58,6 +58,13 @@ app.get('/products/search', async (request, response) => {
 
 });
 
+app.get('/brands', async (request, response) => {
+  const brands = await Mongo.brandsList();
+  data.result = brands;
+  ans.data = data;
+
+  response.send(ans);
+});
 
 //http://localhost:8092/products/642430589661b19b8ce4585c
 app.get('/products/:id', async (req, res) => {
