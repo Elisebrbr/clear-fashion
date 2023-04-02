@@ -5,6 +5,7 @@ const { MongoClient, ObjectId } = require('mongodb');
 const MONGODB_URI = "mongodb+srv://eliseb:MongoDB123@cluster0.2slx9zb.mongodb.net/?retryWrites=true&w=majority";
 const MONGODB_DB_NAME = 'clearfashion';
 
+
 const PORT = 8092;
 
 const app = express();
@@ -58,13 +59,45 @@ app.get('/products/search', async (request, response) => {
 
 });
 
-app.get('/brands', async (request, response) => {
-  const brands = await Mongo.brandsList();
-  data.result = brands;
-  ans.data = data;
+app.get('/products', async (req, res) => {
+  const client = await MongoClient.connect(MONGODB_URI, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  });
+  const db = client.db(MONGODB_DB_NAME);
+  const collection = db.collection('products');
 
-  response.send(ans);
+  try {
+    const result = await collection.find({}).toArray();
+    res.json(result);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Internal server error' });
+  } finally {
+    await client.close();
+  }
 });
+
+app.get('/brands', async (req, res) => {
+  const client = await MongoClient.connect(MONGODB_URI, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  });
+  const db = client.db(MONGODB_DB_NAME);
+  const collection = db.collection('products');
+
+  try {
+    const result = await collection.distinct('brand');
+    res.json(result);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Internal server error' });
+  } finally {
+    await client.close();
+  }
+});
+
+
 
 //http://localhost:8092/products/642430589661b19b8ce4585c
 app.get('/products/:id', async (req, res) => {
